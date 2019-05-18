@@ -1,0 +1,5 @@
+---------------------------------------------------------------
+[ 2019-05-09T11:20:03+00:00 ] 127.0.0.1 GET www.jzb.cn/
+[运行时间：0.150328s] [吞吐率：6.65req/s] [内存消耗：34.39kb] [文件加载：20]
+[ error ] [8]Constant APP_PATH already defined[E:\xgs\tp5\jzb\public\index.php:17]
+[ info ] [ LOG ] INIT File

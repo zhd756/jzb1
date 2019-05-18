@@ -1,0 +1,42 @@
+{layout name="common/other" /}
+<article class="blog-wrap">
+    {foreach $news_list as $value}
+    <div class="blog-article hentry format-image">
+        <figure>
+            <a class="swipebox-x" href="{:url('index/news/info',['id'=>$value.id])}">
+                <img class="img-responsive" alt="{$value['title']}" src="{$value['img']}">
+            </a>
+        </figure>
+        <div class="entry-summary post-summary">
+            <header class="entry-header">
+                <h2 class="entry-title post-title"><a href="{:url('index/news/info',['id'=>$value.id])}" title="{$value['title']}">{$value['title']}</a></h2>
+            </header>
+            <div class="entry-meta post-meta">
+                <ul>
+                    <li class="entry-date date">
+                        <time class="entry-date" datetime="2019-02-25">{$value['create_time']}</time>
+                    </li>
+                    <li class="tags"><a href="{:url('index/news/info',['id'=>$value.id])}">常见问题</a></li>
+                    <li class="byline author vcard li-last">by <a href="javascript:void(0)" class="fn">{$value.users}</a></li>
+                </ul>
+            </div>
+            <div class="entry-content">
+                <p>{$value['introduce']}</p>
+            </div>
+            <a href="{:url('index/news/info',['id'=>$value.id])}" class="read-more-link">查看详细</a></div>
+    </div>
+    {/foreach}
+
+
+</article>
+<div class="news-pagination-wrap">
+    {$page}
+    <!--<div id="pages">-->
+        <!--<div class="page"><a>首页</a>-->
+            <!--<span>1</span>-->
+            <!--<a href="list_16_2.html">2</a>-->
+            <!--<a href="list_16_2.html">下一页</a>-->
+            <!--<a href="list_16_2.html">末页</a>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>

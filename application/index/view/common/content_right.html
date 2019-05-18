@@ -1,0 +1,39 @@
+
+</div>
+<aside class="sidebar col-md-3 inner-right" role="complementary">
+
+    <section class="widget widget-category side-contact">
+        <h3 class="title">联系信息</h3>
+        <div class="s-contact">
+            {$system.contact_info}
+        </div>
+    </section>
+    <section class="widget side-news">
+        <h3 class="title">热点新闻</h3>
+        <div class="tabbed custom-tabbed">
+            <div class="block current">
+                <ul class="widget-list">
+                    {foreach $news as $value}
+                    <li>
+                        <figure>
+                            <a href="{:url('index/news/info',['id'=>$value.id])}" >
+                                <img src="{$value.img}" />
+                            </a>
+                        </figure>
+                        <div class="sn-wrapper">
+                            <p class="s-desc">
+                                <a href="{:url('index/news/info',['id'=>$value.id])}"  title="{$value.title}">{$value.title}</a>
+                            </p>
+                            <span class="comments">
+                                <i class="fa fa-calendar"></i>
+                                &nbsp;{$value.create_time}
+                            </span>
+                        </div>
+                    </li>
+                    {/foreach}
+
+                </ul>
+            </div>
+        </div>
+    </section>
+</aside>

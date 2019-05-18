@@ -1,0 +1,8 @@
+{layout name="common/other" /}
+<div class="blog-post blog-post-wrap">
+    <h3 class="text-center bp-title">{$info.title}</h3>
+    <small class="text-center bp-desc"><i class="fa fa-tag"></i> &nbsp;<a href="{:url('index/news/index',['type'=>$info.type])}">{$info.type_name}</a> &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-calendar"></i> &nbsp;{$info.create_time}</small>
+    <div class="com-cnt page-content bp-content">
+        {$info.text}
+    </div>
+</div>

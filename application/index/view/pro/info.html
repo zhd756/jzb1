@@ -1,0 +1,127 @@
+{layout name="common/other" /}
+
+<div class="product-show">
+    <h3 class="text-center ps-title">产品名称一</h3>
+    <small class="text-center ps-desc"><i class="fa fa-info"></i> &nbsp;提示：点击图片可以放大</small>
+    <div class="com-cnt page-content ps-content">
+        <div class="product-gallery">
+            <div class="pro-items">
+                {foreach $info.imgs as $value}
+                <div class="item">
+                    <a href="{$value}"  title="" class="fancybox" rel="fancy-gallery">
+                        <img class="pic-img" src="{$value}"  alt=""/>
+                    </a>
+                </div>
+                {/foreach}
+            </div>
+        </div>
+        <div class="proshow-tab">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#ptab-1" aria-controls="ptab-1" role="tab" data-toggle="tab">产品介绍</a></li>
+                <!--<li role="presentation"><a href="#ptab-2" aria-controls="ptab-2" role="tab" data-toggle="tab">产品参数</a></li>-->
+                <li role="presentation"><a href="#ptab-3" aria-controls="ptab-3" role="tab" data-toggle="tab">在线留言</a></li>
+            </ul>
+            <div class="com-cnt page-content tab-content">
+                <div role="tabpanel" class="tab-pane active" id="ptab-1">
+                    <div class="n-content">
+                        {$info.text}
+                    </div>
+                </div>
+                <!--<div role="tabpanel" class="tab-pane" id="ptab-2">
+                  <div class="n-content"></div>
+                </div>-->
+                <div role="tabpanel" class="tab-pane" id="ptab-3">
+                    <form action="{:url('index/index/pro_email_send')}" id="product-msg-form" enctype="multipart/form-data" method="post" onsubmit="return checkForm();">
+                        <input type="hidden" name="action" value="post" />
+                        <input type="hidden" name="diyid" value="1" />
+                        <input type="hidden" name="do" value="2" />
+                        <div class="cf-column">
+                            <input name="cp" id="cp" type="text" placeholder="产品名称" validate="minlength:2, maxlength:50, required:true" class="col-username"/>
+                        </div>
+                        <div class="cf-column">
+                            <input name="name" id="name" type="text" placeholder="名字" validate="minlength:2, maxlength:50, required:true" class="col-username"/>
+                        </div>
+                        <div class="cf-column">
+                            <input name="email" id="email" type="text"  placeholder="邮箱" validate="maxlength:40, required:true, email:true" class="col-email"/>
+                        </div>
+                        <div class="cf-column">
+                            <input name="tel" id="tel" type="text"  placeholder="电话/手机" validate="minlength:6, maxlength:40, required:true" class="col-telephone"/>
+                        </div>
+                        <div class="cf-column">
+                            <textarea name="content" id="content"  placeholder="详细内容" validate="minlength:2, maxlength:200, required:true"></textarea>
+                        </div>
+                        <input type="hidden" name="dede_fields" value="name,text;tel,text;email,text;content,multitext;cp,text;zt,text" />
+                        <input type="hidden" name="dede_fieldshash" value="7ec7c442f925caa0891825e6fa521dd0" />
+                        <input type="submit" value="立即发送"  id="submit-btn" class="contact-submit btn colored col-md-12 submit-button"/>
+                    </form>
+                    <script type="text/javascript">
+                        function checkForm()
+                        {
+                            if(document.getElementById('name').value.length == 0)
+                            {
+                                alert('请输入您的姓名');
+                                return false;
+                            }
+                            if(document.getElementById('tel').value.length == 0)
+                            {
+                                alert('请输入您的电话');
+                                return false;
+                            }
+
+                            return true;
+                        }
+                    </script>
+                    <script type="text/javascript" src="__JS__/jquery.form.js" ></script>
+                    <script type="text/javascript" src="__JS__/jquery.artdialog.js" ></script>
+                    <script type="text/javascript" src="__JS__/iframetools.js" ></script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" type="text/css" href="__CSS__/jquery.fancybox.css"  media="screen" />
+<script type="text/javascript" src="__JS__/jquery.fancybox.js" ></script>
+<script type="text/javascript">
+    jQuery(document).ready(function($) {
+        // Fancybox
+        $('.fancybox').fancybox({
+            helpers: {
+                overlay: {
+                    locked: false
+                }
+            }
+        });
+        $('.product-gallery .pro-items').owlCarousel({
+            loop:true,
+            margin:0,
+            items:2,
+            autoplay:true,
+            controls:true,
+            responsiveClass:true,
+            itemsDesktop : [1900,2],
+            itemsDesktopSmall : [979,2],
+            itemsTablet : [959,2],
+            itemsTabletSmall : [768,2],
+            itemsMobile : [479,1],
+            responsive:{
+                0:{
+                    items:1,
+                    nav:false
+                },
+                767:{
+                    items:2,
+                    nav:false
+                },
+                1440:{
+                    items:2,
+                    nav:false
+                },
+                1600:{
+                    items:2,
+                    nav:false
+                }
+            }
+        });
+    });
+</script>
+<script language="JavaScript" src="__JS__/index.js" ></script>
