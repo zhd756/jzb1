@@ -31,6 +31,8 @@ class News extends Common
 
         $arr = [
             'title'=>'新闻资讯',
+            'description' => $this->system['description'],
+            'keywords' => $this->system['keywords'],
             'system'=>$this->system,
             'news'=>$news_arr,
             'news_list'=>$news_list,
@@ -60,11 +62,11 @@ class News extends Common
         $type = new Type();
         $type_arr = $type->where(['table_name'=>'news'])->select();
 
-        $type_arr = _array_column($type_arr,'name','type');
+        $type_arr = _array_column($type_arr->toArray(),'name','type');
         $info_arr['type_name'] = $type_arr[$info_arr['type']];
 
         $arr = [
-            'title'=>'新闻资讯',
+            'title'=>$type_arr[$info_arr['type']],
             'system'=>$this->system,
             'news'=>$news_arr,
             'info'=>$info_arr,

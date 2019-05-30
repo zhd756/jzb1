@@ -13,13 +13,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => '127.0.0.1',//'rm-bp1525rqticc6xm4w.mysql.rds.aliyuncs.com',
+    'hostname'        => '127.0.0.1',
     // 数据库名
     'database'        => 'r8vi7258h7',
     // 用户名
-    'username'        => 'root',//'jzbadmin',
+    'username'        => 'root',
     // 密码
-    'password'        => '123456',//'Cjjzb20190510',
+    'password'        => '123456',
     // 端口
     'hostport'        => '3306',
     // 连接dsn
@@ -45,7 +45,7 @@ return [
     // 是否严格检查字段是否存在
     'fields_strict'   => true,
     // 数据集返回类型
-    'resultset_type'  => 'array',
+    'resultset_type'  => '\think\Collection',//'array',
     // 自动写入时间戳字段
     'auto_timestamp'  => false,
     // 时间字段取出后的默认时间格式

@@ -1,0 +1,561 @@
+{layout name="common/index" /}
+<style>
+    .a-upload {
+        padding: 4px 10px;
+        height: 30px;
+        line-height: 20px;
+        position: relative;
+        cursor: pointer;
+        color: #888;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+        display: inline-block;
+        *display: inline;
+        *zoom: 1;
+        bottom:0
+    }
+
+    .a-upload  input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        cursor: pointer;
+    }
+
+    .a-upload:hover {
+        color: #444;
+        background: #eee;
+        border-color: #ccc;
+        text-decoration: none
+    }
+    .show img,.show1 img,.show2 img{
+        width: 420px;
+    }
+</style>
+<script type="text/javascript">
+    var isIE = /msie/i.test(navigator.userAgent) && !window.opera;
+    function fileChange(target,id) {
+        var fileSize = 0;
+        //var filetypes =[".jpg",".png",".rar",".txt",".zip",".doc",".ppt",".xls",".pdf",".docx",".xlsx"];
+        var filetypes =[".jpg",".png"];
+        var filepath = target.value;
+        var filemaxsize = 500*1024; //大小
+        if(filepath){
+            var isnext = false;
+            var fileend = filepath.substring(filepath.indexOf("."));
+            if(filetypes && filetypes.length>0){
+                for(var i =0; i<filetypes.length;i++){
+                    if(filetypes[i]==fileend){
+                        isnext = true;
+                        break;
+                    }
+                }
+            }
+            if(!isnext){
+                alert("不接受此文件类型！");
+                target.value ="";
+                return false;
+            }
+        }else{
+            return false;
+        }
+        if (isIE && !target.files) {
+            var filePath = target.value;
+            var fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+            if(!fileSystem.FileExists(filePath)){
+                alert("附件不存在，请重新输入！");
+                return false;
+            }
+            var file = fileSystem.GetFile (filePath);
+            fileSize = file.Size;
+        } else {
+            fileSize = target.files[0].size;
+        }
+
+        var size = fileSize ;
+
+        if(size>filemaxsize){
+            alert("附件大小不能大于500K！");
+            target.value ="";
+            return false;
+        }
+        if(size<=0){
+            alert("附件大小不能为 0 K！");
+            target.value ="";
+            return false;
+        }
+
+        var imgURL = "";
+        try{
+            var file1 = null;
+            if(target.files && target.files[0] ){
+                file1 = target.files[0];
+            }else if(target.files && target.files.item(0)) {
+                file1 = target.files.item(0);
+            }
+            //Firefox 因安全性问题已无法直接通过input[file1].value 获取完整的文件路径
+            try{
+                //Firefox7.0
+                imgURL =  file1.getAsDataURL();
+                //alert("//Firefox7.0"+imgRUL);
+            }catch(e){
+                //Firefox8.0以上
+                imgRUL = window.URL.createObjectURL(file1);
+                //alert("//Firefox8.0以上"+imgRUL);
+            }
+        }catch(e){      //这里不知道怎么处理了，如果是遨游的话会报这个异常
+            //支持html5的浏览器,比如高版本的firefox、chrome、ie10
+            if (target.files && target.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    imgURL = e.target.result;
+                };
+                reader.readAsDataURL(target.files[0]);
+            }
+        }
+        $(".show img").remove();
+        creatImg(imgRUL);
+        return imgURL;
+    }
+
+    function creatImg(imgRUL){   //根据指定URL创建一个Img对象
+        var textHtml = "<img src='"+imgRUL+"'/>";
+        $(".make").after(textHtml);
+    }
+
+    function fileChange1(target,id) {
+        var fileSize = 0;
+        //var filetypes =[".jpg",".png",".rar",".txt",".zip",".doc",".ppt",".xls",".pdf",".docx",".xlsx"];
+        var filetypes =[".jpg",".png"];
+        var filepath = target.value;
+        var filemaxsize = 500*1024; //大小
+        if(filepath){
+            var isnext = false;
+            var fileend = filepath.substring(filepath.indexOf("."));
+            if(filetypes && filetypes.length>0){
+                for(var i =0; i<filetypes.length;i++){
+                    if(filetypes[i]==fileend){
+                        isnext = true;
+                        break;
+                    }
+                }
+            }
+            if(!isnext){
+                alert("不接受此文件类型！");
+                target.value ="";
+                return false;
+            }
+        }else{
+            return false;
+        }
+        if (isIE && !target.files) {
+            var filePath = target.value;
+            var fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+            if(!fileSystem.FileExists(filePath)){
+                alert("附件不存在，请重新输入！");
+                return false;
+            }
+            var file = fileSystem.GetFile (filePath);
+            fileSize = file.Size;
+        } else {
+            fileSize = target.files[0].size;
+        }
+
+        var size = fileSize ;
+
+        if(size>filemaxsize){
+            alert("附件大小不能大于500K！");
+            target.value ="";
+            return false;
+        }
+        if(size<=0){
+            alert("附件大小不能为 0 K！");
+            target.value ="";
+            return false;
+        }
+
+        var imgURL = "";
+        try{
+            var file1 = null;
+            if(target.files && target.files[0] ){
+                file1 = target.files[0];
+            }else if(target.files && target.files.item(0)) {
+                file1 = target.files.item(0);
+            }
+            //Firefox 因安全性问题已无法直接通过input[file1].value 获取完整的文件路径
+            try{
+                //Firefox7.0
+                imgURL =  file1.getAsDataURL();
+                //alert("//Firefox7.0"+imgRUL);
+            }catch(e){
+                //Firefox8.0以上
+                imgRUL = window.URL.createObjectURL(file1);
+                //alert("//Firefox8.0以上"+imgRUL);
+            }
+        }catch(e){      //这里不知道怎么处理了，如果是遨游的话会报这个异常
+            //支持html5的浏览器,比如高版本的firefox、chrome、ie10
+            if (target.files && target.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    imgURL = e.target.result;
+                };
+                reader.readAsDataURL(target.files[0]);
+            }
+        }
+        $(".show1 img").remove();
+        creatImg1(imgRUL);
+        return imgURL;
+    }
+
+    function creatImg1(imgRUL){   //根据指定URL创建一个Img对象
+        var textHtml = "<img src='"+imgRUL+"'/>";
+        $(".make1").after(textHtml);
+    }
+
+    function fileChange2(target,id) {
+        var fileSize = 0;
+        //var filetypes =[".jpg",".png",".rar",".txt",".zip",".doc",".ppt",".xls",".pdf",".docx",".xlsx"];
+        var filetypes =[".jpg",".png"];
+        var filepath = target.value;
+        var filemaxsize = 500*1024; //大小
+        if(filepath){
+            var isnext = false;
+            var fileend = filepath.substring(filepath.indexOf("."));
+            if(filetypes && filetypes.length>0){
+                for(var i =0; i<filetypes.length;i++){
+                    if(filetypes[i]==fileend){
+                        isnext = true;
+                        break;
+                    }
+                }
+            }
+            if(!isnext){
+                alert("不接受此文件类型！");
+                target.value ="";
+                return false;
+            }
+        }else{
+            return false;
+        }
+        if (isIE && !target.files) {
+            var filePath = target.value;
+            var fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+            if(!fileSystem.FileExists(filePath)){
+                alert("附件不存在，请重新输入！");
+                return false;
+            }
+            var file = fileSystem.GetFile (filePath);
+            fileSize = file.Size;
+        } else {
+            fileSize = target.files[0].size;
+        }
+
+        var size = fileSize ;
+
+        if(size>filemaxsize){
+            alert("附件大小不能大于500K！");
+            target.value ="";
+            return false;
+        }
+        if(size<=0){
+            alert("附件大小不能为 0 K！");
+            target.value ="";
+            return false;
+        }
+
+        var imgURL = "";
+        try{
+            var file1 = null;
+            if(target.files && target.files[0] ){
+                file1 = target.files[0];
+            }else if(target.files && target.files.item(0)) {
+                file1 = target.files.item(0);
+            }
+            //Firefox 因安全性问题已无法直接通过input[file1].value 获取完整的文件路径
+            try{
+                //Firefox7.0
+                imgURL =  file1.getAsDataURL();
+                //alert("//Firefox7.0"+imgRUL);
+            }catch(e){
+                //Firefox8.0以上
+                imgRUL = window.URL.createObjectURL(file1);
+                //alert("//Firefox8.0以上"+imgRUL);
+            }
+        }catch(e){      //这里不知道怎么处理了，如果是遨游的话会报这个异常
+            //支持html5的浏览器,比如高版本的firefox、chrome、ie10
+            if (target.files && target.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    imgURL = e.target.result;
+                };
+                reader.readAsDataURL(target.files[0]);
+            }
+        }
+        $(".show2 img").remove();
+        creatImg2(imgRUL);
+        return imgURL;
+    }
+
+    function creatImg2(imgRUL){   //根据指定URL创建一个Img对象
+        var textHtml = "<img src='"+imgRUL+"'/>";
+        $(".make2").after(textHtml);
+    }
+</script>
+<script type="text/javascript" charset="utf-8" src="__JS__/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__JS__/ueditor.all.min.js"> </script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="__JS__//zh-cn/zh-cn.js"></script>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong><span class="icon-pencil-square-o"></span> 网站信息</strong></div>
+  <div class="body-content">
+    <form method="post" class="form-x"  enctype="multipart/form-data"  action="{:url('info/edit')}">
+        <div class="form-group">
+            <div class="label">
+                <label>网站标题：</label>
+            </div>
+            <div class="field">
+                <input type="text" class="input" name="title" value="{$info.title}"/>
+                <div class="tips"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">
+                <label>网站关键字：</label>
+            </div>
+            <div class="field">
+                <textarea class="input" name="keywords" style="height:80px">{$info.keywords}</textarea>
+                <div class="tips"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">
+                <label>网站描述：</label>
+            </div>
+            <div class="field">
+                <textarea class="input" name="description">{$info.description}</textarea>
+                <div class="tips"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">
+                <label>首页产品简介：</label>
+            </div>
+            <div class="field">
+                <input type="text" class="input" name="product_text" value="{$info.product_text}"/>
+                <div class="tips"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">
+                <label>左侧文字：</label>
+            </div>
+            <div class="field">
+                <div><script id="editor" name="box_left"  type="text/plain" style="width:1024px;height:500px;">{$info.box_left}</script></div>
+                <div class="tips"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">
+                <label>右侧图片：</label>
+            </div>
+            <div class="field">
+                <div class="show2">
+                    <div class="make2"></div>
+                    <img class="mini_img " src="{if !empty($info.box_right)}{$info.box_right}{else}__IMG__/none.png{/if}" width="120px">
+                    <div class="help-block"><a href="javascript:;" class="a-upload">点击上传<input class="" type="file" placeholder="" name="box_right"  onchange="fileChange2(this)"></a></div>
+                </div>
+            </div>
+        </div>
+      <div class="form-group">
+        <div class="label">
+          <label>网站LOGO：</label>
+        </div>
+        <div class="field">
+          <!--<input type="text" id="url1" name="slogo" class="input tips" style="width:25%; float:left;" value="" data-toggle="hover" data-place="right" data-image=""  />-->
+          <!--<input type="button" class="button bg-blue margin-left" id="image1" value="+ 浏览上传" >-->
+
+            <div class="show">
+            <div class="make"></div>
+            <img class="mini_img " src="{if !empty($info.logo_top)}{$info.logo_top}{else}__IMG__/none.png{/if}" width="120px">
+            <div class="help-block"><a href="javascript:;" class="a-upload">点击上传<input class="" type="file" placeholder="" name="logo_top"  onchange="fileChange(this)"></a></div>
+            </div>
+        </div>
+      </div>
+      <!--<div class="form-group">
+        <div class="label">
+          <label>网站域名：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input" name="surl" value="" />
+        </div>
+      </div>-->
+      <!--<div class="form-group" style="display:none">
+        <div class="label">
+          <label>副加标题：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input" name="sentitle" value="" />
+          <div class="tips"></div>
+        </div>
+      </div>-->
+        <!-- 关于我们 -->
+      <div class="form-group">
+        <div class="label">
+          <label>底部关于我们：</label>
+        </div>
+        <div class="field">
+          <textarea class="input" name="about_bottom" style="height:130px">{$info.about_bottom}</textarea>
+          <div class="tips"></div>
+        </div>
+      </div>
+        <div class="form-group">
+            <div class="label">
+                <label>底部关于我们url：</label>
+            </div>
+            <div class="field">
+                <input type="text" class="input" name="about_bottom_url" value="{$info.about_bottom_url}" />
+                <div class="tips"></div>
+            </div>
+        </div>
+
+        <!-- 联系我们 -->
+        <div class="form-group">
+            <div class="label">
+                <label>地址：</label>
+            </div>
+            <div class="field">
+                <input type="text" class="input" name="contact_address" value="{$info.contact_address}" />
+                <div class="tips"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">
+                <label>全国热线：</label>
+            </div>
+            <div class="field">
+                <input type="text" class="input" name="contact_phone" value="{$info.contact_phone}" />
+                <div class="tips"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">
+                <label>手机：</label>
+            </div>
+            <div class="field">
+                <input type="text" class="input" name="contact_mobile" value="{$info.contact_mobile}" />
+                <div class="tips"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="label">
+                <label>邮箱：</label>
+            </div>
+            <div class="field">
+                <input type="text" class="input" name="contact_email" value="{$info.contact_email}" />
+                <div class="tips"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">
+                <label>二维码：</label>
+            </div>
+            <div class="field">
+                <!--<input type="text" id="url1" name="slogo" class="input tips" style="width:25%; float:left;" value="" data-toggle="hover" data-place="right" data-image=""  />-->
+                <!--<input type="button" class="button bg-blue margin-left" id="image1" value="+ 浏览上传" >-->
+
+                <div class="show1">
+                    <div class="make1"></div>
+                    <img class="mini_img " src="{if !empty($info.qrcode)}{$info.qrcode}{else}__IMG__/none.png{/if}" width="120px">
+                    <div class="help-block"><a href="javascript:;" class="a-upload">点击上传<input class="" type="file" placeholder="" name="qrcode"  onchange="fileChange1(this)"></a></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">
+                <label>QQ：</label>
+            </div>
+            <div class="field">
+                <input type="text" class="input" name="qq" value="{$info.qq}" />
+                <div class="tips"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">
+                <label>商城外链：</label>
+            </div>
+            <div class="field">
+                <input type="text" class="input" name="tmall" value="{$info.tmall}" />
+                <div class="tips"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="label">
+                <label>底部信息：</label>
+            </div>
+            <div class="field">
+                <textarea name="copyright" class="input" style="height:120px;">{$info.copyright}</textarea>
+                <div class="tips"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">
+                <label></label>
+            </div>
+            <div class="field">
+                <button class="button bg-main icon-check-square-o" type="submit"> 提交</button>
+            </div>
+        </div>
+<!--        <div class="form-group">
+            <div class="label">
+                <label>电话：</label>
+            </div>
+            <div class="field">
+                <input type="text" class="input" name="s_tel" value="" />
+                <div class="tips"></div>
+            </div>
+        </div>
+        <div class="form-group" style="display:none;">
+            <div class="label">
+                <label>400电话：</label>
+            </div>
+            <div class="field">
+                <input type="text" class="input" name="s_400" value="" />
+                <div class="tips"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">
+                <label>传真：</label>
+            </div>
+            <div class="field">
+                <input type="text" class="input" name="s_fax" value="" />
+                <div class="tips"></div>
+            </div>
+        </div>
+        <div class="form-group" style="display:none">
+            <div class="label">
+                <label>QQ群：</label>
+            </div>
+            <div class="field">
+                <input type="text" class="input" name="s_qqu" value="" />
+                <div class="tips"></div>
+            </div>
+        </div>-->
+    </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+    //实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+    var ue = UE.getEditor('editor');
+</script>

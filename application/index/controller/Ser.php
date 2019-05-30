@@ -33,6 +33,8 @@ class Ser extends Common
 
         $arr = [
             'title'=>'服务支持',
+            'description' => $this->system['description'],
+            'keywords' => $this->system['keywords'],
             'system'=>$this->system,
             'news'=>$news_arr,
             'info'=>$info_arr,

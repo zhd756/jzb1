@@ -14,6 +14,8 @@ return [
     // | 应用设置
     // +----------------------------------------------------------------------
 
+    //弹性web托管的url重写
+    'URL_MODEL' =>  3,
     // 应用调试模式
     'app_debug'              => true,
     // 应用Trace
@@ -150,7 +152,9 @@ return [
     'view_replace_str'       => [
         '__CSS__'  => '/skin/css',
         '__JS__'  => '/skin/js',
+        '__SWF__'  => '/skin/swf',
         '__UPLOADS__'  => '/uploads',
+        '__IMG__'  => '/skin/images',
     ],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',

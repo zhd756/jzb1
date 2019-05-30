@@ -1,7 +1,7 @@
 {layout name="common/other" /}
 
 <div class="product-show">
-    <h3 class="text-center ps-title">产品名称一</h3>
+    <h3 class="text-center ps-title">{$info.title}</h3>
     <small class="text-center ps-desc"><i class="fa fa-info"></i> &nbsp;提示：点击图片可以放大</small>
     <div class="com-cnt page-content ps-content">
         <div class="product-gallery">
@@ -32,11 +32,8 @@
                 </div>-->
                 <div role="tabpanel" class="tab-pane" id="ptab-3">
                     <form action="{:url('index/index/pro_email_send')}" id="product-msg-form" enctype="multipart/form-data" method="post" onsubmit="return checkForm();">
-                        <input type="hidden" name="action" value="post" />
-                        <input type="hidden" name="diyid" value="1" />
-                        <input type="hidden" name="do" value="2" />
                         <div class="cf-column">
-                            <input name="cp" id="cp" type="text" placeholder="产品名称" validate="minlength:2, maxlength:50, required:true" class="col-username"/>
+                            <input name="title" id="cp" type="text" placeholder="产品名称" validate="minlength:2, maxlength:50, required:true" class="col-username"/>
                         </div>
                         <div class="cf-column">
                             <input name="name" id="name" type="text" placeholder="名字" validate="minlength:2, maxlength:50, required:true" class="col-username"/>
@@ -45,13 +42,11 @@
                             <input name="email" id="email" type="text"  placeholder="邮箱" validate="maxlength:40, required:true, email:true" class="col-email"/>
                         </div>
                         <div class="cf-column">
-                            <input name="tel" id="tel" type="text"  placeholder="电话/手机" validate="minlength:6, maxlength:40, required:true" class="col-telephone"/>
+                            <input name="phone" id="tel" type="text"  placeholder="电话/手机" validate="minlength:6, maxlength:40, required:true" class="col-telephone"/>
                         </div>
                         <div class="cf-column">
-                            <textarea name="content" id="content"  placeholder="详细内容" validate="minlength:2, maxlength:200, required:true"></textarea>
+                            <textarea name="text" id="content"  placeholder="详细内容" validate="minlength:2, maxlength:200, required:true"></textarea>
                         </div>
-                        <input type="hidden" name="dede_fields" value="name,text;tel,text;email,text;content,multitext;cp,text;zt,text" />
-                        <input type="hidden" name="dede_fieldshash" value="7ec7c442f925caa0891825e6fa521dd0" />
                         <input type="submit" value="立即发送"  id="submit-btn" class="contact-submit btn colored col-md-12 submit-button"/>
                     </form>
                     <script type="text/javascript">

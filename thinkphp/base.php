@@ -29,6 +29,8 @@ defined('TEMP_PATH') or define('TEMP_PATH', RUNTIME_PATH . 'temp' . DS);
 defined('CONF_PATH') or define('CONF_PATH', APP_PATH); // 配置文件目录
 defined('CONF_EXT') or define('CONF_EXT', EXT); // 配置文件后缀
 defined('ENV_PREFIX') or define('ENV_PREFIX', 'PHP_'); // 环境变量的配置前缀
+defined('UPLOADS') or define('UPLOADS', dirname(realpath(APP_PATH)) . DS . 'uploads'. DS );
+defined('CONFIG_PATH') or define('CONFIG_PATH', dirname(realpath(APP_PATH)) . DS . 'config'. DS );
 
 // 环境常量
 define('IS_CLI', PHP_SAPI == 'cli' ? true : false);

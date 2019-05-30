@@ -1,0 +1,226 @@
+{layout name="common/index" /}
+<style>
+    .a-upload {
+        padding: 4px 10px;
+        height: 30px;
+        line-height: 20px;
+        position: relative;
+        cursor: pointer;
+        color: #888;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+        display: inline-block;
+        *display: inline;
+        *zoom: 1;
+        bottom:0
+    }
+
+    .a-upload  input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        cursor: pointer;
+    }
+
+    .a-upload:hover {
+        color: #444;
+        background: #eee;
+        border-color: #ccc;
+        text-decoration: none
+    }
+    .show img,.show1 img{
+        width: 50%;
+    }
+</style>
+<script type="text/javascript">
+    var isIE = /msie/i.test(navigator.userAgent) && !window.opera;
+    function fileChange(target,id) {
+        var fileSize = 0;
+        //var filetypes =[".jpg",".png",".rar",".txt",".zip",".doc",".ppt",".xls",".pdf",".docx",".xlsx"];
+        var filetypes =[".jpg",".png"];
+        var filepath = target.value;
+        var filemaxsize = 500*1024; //大小
+        if(filepath){
+            var isnext = false;
+            var fileend = filepath.substring(filepath.indexOf("."));
+            if(filetypes && filetypes.length>0){
+                for(var i =0; i<filetypes.length;i++){
+                    if(filetypes[i]==fileend){
+                        isnext = true;
+                        break;
+                    }
+                }
+            }
+            if(!isnext){
+                alert("不接受此文件类型！");
+                target.value ="";
+                return false;
+            }
+        }else{
+            return false;
+        }
+        if (isIE && !target.files) {
+            var filePath = target.value;
+            var fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+            if(!fileSystem.FileExists(filePath)){
+                alert("附件不存在，请重新输入！");
+                return false;
+            }
+            var file = fileSystem.GetFile (filePath);
+            fileSize = file.Size;
+        } else {
+            fileSize = target.files[0].size;
+        }
+
+        var size = fileSize ;
+
+        if(size>filemaxsize){
+            alert("附件大小不能大于500K！");
+            target.value ="";
+            return false;
+        }
+        if(size<=0){
+            alert("附件大小不能为 0 K！");
+            target.value ="";
+            return false;
+        }
+
+        var imgURL = "";
+        try{
+            var file1 = null;
+            if(target.files && target.files[0] ){
+                file1 = target.files[0];
+            }else if(target.files && target.files.item(0)) {
+                file1 = target.files.item(0);
+            }
+            //Firefox 因安全性问题已无法直接通过input[file1].value 获取完整的文件路径
+            try{
+                //Firefox7.0
+                imgURL =  file1.getAsDataURL();
+                //alert("//Firefox7.0"+imgRUL);
+            }catch(e){
+                //Firefox8.0以上
+                imgRUL = window.URL.createObjectURL(file1);
+                //alert("//Firefox8.0以上"+imgRUL);
+            }
+        }catch(e){      //这里不知道怎么处理了，如果是遨游的话会报这个异常
+            //支持html5的浏览器,比如高版本的firefox、chrome、ie10
+            if (target.files && target.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    imgURL = e.target.result;
+                };
+                reader.readAsDataURL(target.files[0]);
+            }
+        }
+        $(".show img").remove();
+        creatImg(imgRUL);
+        return imgURL;
+    }
+
+    function creatImg(imgRUL){   //根据指定URL创建一个Img对象
+        var textHtml = "<img src='"+imgRUL+"'/>";
+        $(".make").after(textHtml);
+    }
+
+</script>
+<div class="panel admin-panel margin-top" id="add">
+    <div class="panel-head"><strong><span class="icon-pencil-square-o"></span> 修改内容</strong></div>
+    <div class="body-content">
+        <form method="post" class="form-x" enctype="multipart/form-data" action="">
+            <div class="form-group">
+                <div class="label">
+                    <label>标题：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" value="{$info.title}" name="title" data-validate="required:请输入标题" />
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <!--<div class="form-group">
+                <div class="label">
+                    <label>URL：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" name="url" value=""  />
+                    <div class="tips"></div>
+                </div>
+            </div>-->
+            <div class="form-group">
+                <div class="label">
+                    <label>分类标题：</label>
+                </div>
+                <div class="field">
+                    <select name="type" class="input w50">
+                        <option value="">请选择分类</option>
+                        {foreach $type_arr as $value}
+                        <option value="{$value.type}"  {if $info.type == $value.type} selected{/if}>{$value.name}</option>
+                        {/foreach}
+                    </select>
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>介绍：</label>
+                </div>
+                <div class="field">
+                    <textarea class="input" name="introduce">{$info.introduce}</textarea>
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>图片：</label>
+                </div>
+                <div class="field">
+                    <div class="show">
+                        <div class="make"></div>
+                        <img class="mini_img " src="{if !empty($info.img)}{$info.img}{else}__IMG__/none.jpg{/if}" width="100%">
+                        <div class="help-block"><a href="javascript:;" class="a-upload">点击上传<input class="" type="file" placeholder="" name="img"  onchange="fileChange(this)"></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>内容：</label>
+                </div>
+                <div class="field">
+                    <textarea name="text" class="input" style="height:450px; border:1px solid #ddd;">{$info.text}</textarea>
+                    <div class="tips" title=""></div>
+                </div>
+            </div>
+           <!-- <div class="form-group">
+                <div class="label">
+                    <label>描述：</label>
+                </div>
+                <div class="field">
+                    <textarea type="text" class="input" name="note" style="height:120px;" value=""></textarea>
+                    <div class="tips"></div>
+                </div>
+            </div>-->
+           <!-- <div class="form-group">
+                <div class="label">
+                    <label>排序：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" name="sort" value=""  data-validate="required:,number:排序必须为数字" />
+                    <div class="tips"></div>
+                </div>
+            </div>-->
+            <div class="form-group">
+                <div class="label">
+                    <label></label>
+                </div>
+                <div class="field">
+                    <button class="button bg-main icon-check-square-o" type="submit"> 提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

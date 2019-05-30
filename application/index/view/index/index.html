@@ -53,8 +53,9 @@
                   <h2 class="light-font">{$tab1.title1}</h2>
                   <p>{$tab1.text}</p>
                   <ul class="list-style-check">
-                    <li>{$tab1.tips1}</li>
-                    <li class="li-last">{$tab1.tips2}</li>
+                      {foreach $tab1.tips as $key => $value}
+                    <li>{$value}</li>
+                      {/foreach}
                   </ul>
                   <a class="btn btn-primary btn-lg btn-icon-right" href="{$tab1.url}">{$tab1.url_title}
                   <div class="btn-icon"><i class="fa fa-long-arrow-right"></i></div>
@@ -67,11 +68,9 @@
                 <div class="col-md-6 whyus-left">
                   <h2 class="light-font">{$tab2.title1}</h2>
                   <ul class="list-style-check">
-                    <li>{$tab2.tips1}</li>
-                    <li>{$tab2.tips2}</li>
-                    <li>{$tab2.tips3}</li>
-                    <li>{$tab2.tips4}</li>
-                    <li class="li-last">{$tab2.tips5}</li>
+                      {foreach $tab2.tips as $key => $value}
+                    <li>{$value}</li>
+                      {/foreach}
                   </ul>
                   <a class="btn btn-primary btn-lg btn-icon-right" href="{$tab1.url}">{$tab2.url_title}
                   <div class="btn-icon"><i class="fa fa-long-arrow-right"></i></div>
@@ -85,10 +84,9 @@
                   <h2 class="light-font">{$tab3.title1}</h2>
                   <p>{$tab3.text}</p>
                   <ul class="list-style-check">
-                    <li>{$tab3.tips1}</li>
-                    <li>{$tab3.tips2}</li>
-                    <li>{$tab3.tips3}</li>
-                    <li class="li-last">{$tab3.tips4}</li>
+                      {foreach $tab3.tips as $key => $value}
+                    <li>{$value}</li>
+                      {/foreach}
                   </ul>
                   <!--<a class="btn btn-primary btn-lg btn-icon-right">了解实际案例视频分享<div class="btn-icon"><i class="fa fa-long-arrow-right"></i></div></a>-->
                 </div>
@@ -214,7 +212,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="bx-wrapper">
-            <img src="http://www.jzb.com/uploads/20190515/1-1F4211609580-L.png" width="100%"/>
+            <img src="{$hz_img}" width="100%"/>
             <!--<div class="bx-controls bx-has-pager bx-has-controls-direction iclient-ctrl">
               <div class="bx-controls-direction"> <a href="javascript:void(0);" class="bx-prev"><i class="fa fa-angle-left"></i></a> <a href="javascript:void(0);" class="bx-next"><i class="fa fa-angle-right"></i></a> </div>
             </div>

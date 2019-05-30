@@ -1,7 +1,7 @@
 <div class="breadcrumb-wrapper">
     <div class="container">
         <div class="row">
-            <div class="col-md-3 col-sm-4 bcid-cat">{$title}</div>
+            <div class="col-md-3 col-sm-4 bcid-cat">{if isset($tips)}{$tips}{else}{$title}{/if}</div>
             <div class="col-md-9 col-sm-8 location">
                 <!--<i class="fa fa-map-marker"></i>&nbsp;
                 <span>当前位置：

@@ -9,6 +9,7 @@
 namespace app\index\controller;
 
 
+use app\admin\model\Type;
 use app\index\model\Product;
 use app\index\model\News as NewsModel;
 
@@ -34,6 +35,8 @@ class Pro extends Common
 
         $arr = [
             'title'=>'产品展示',
+            'description' => $this->system['description'],
+            'keywords' => $this->system['keywords'],
             'system'=>$this->system,
             'news'=>$news_arr,
             'product'=>$product_arr,
@@ -63,8 +66,13 @@ class Pro extends Common
         $info_arr = $pro->where($where)->find()->getData();
         $info_arr['imgs'] = explode(',',$info_arr['imgs']);
 
+        $type = new Type();
+        $type_info = $type->where(['table_name'=>'product'])->select();
+
+        $arr1 = _array_column($type_info->toArray(),'name','type');
+
         $arr = [
-            'title'=>'产品',
+            'title'=>$arr1[$info_arr['type']],
             'system'=>$this->system,
             'news'=>$news_arr,
             'info'=>$info_arr,

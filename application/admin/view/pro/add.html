@@ -1,0 +1,450 @@
+{layout name="common/index" /}
+<style>
+    .a-upload {
+        padding: 4px 10px;
+        height: 30px;
+        line-height: 20px;
+        position: relative;
+        cursor: pointer;
+        color: #888;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+        display: inline-block;
+        *display: inline;
+        *zoom: 1;
+        bottom:0
+    }
+
+    .a-upload  input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        cursor: pointer;
+    }
+
+    .a-upload:hover {
+        color: #444;
+        background: #eee;
+        border-color: #ccc;
+        text-decoration: none
+    }
+    .show img,.show1 img{
+        width: 20%;
+    }
+    #box{ margin:50px auto; width:540px; min-height:400px; background:#FF9}
+    #demo{ margin:50px auto; width:540px; min-height:800px; background:#CF9}
+
+
+</style>
+<script type="text/javascript">
+    var isIE = /msie/i.test(navigator.userAgent) && !window.opera;
+    function fileChange(target,id) {
+        var fileSize = 0;
+        //var filetypes =[".jpg",".png",".rar",".txt",".zip",".doc",".ppt",".xls",".pdf",".docx",".xlsx"];
+        var filetypes =[".jpg",".png"];
+        var filepath = target.value;
+        var filemaxsize = 500*1024; //大小
+        if(filepath){
+            var isnext = false;
+            var fileend = filepath.substring(filepath.indexOf("."));
+            if(filetypes && filetypes.length>0){
+                for(var i =0; i<filetypes.length;i++){
+                    if(filetypes[i]==fileend){
+                        isnext = true;
+                        break;
+                    }
+                }
+            }
+            if(!isnext){
+                alert("不接受此文件类型！");
+                target.value ="";
+                return false;
+            }
+        }else{
+            return false;
+        }
+        if (isIE && !target.files) {
+            var filePath = target.value;
+            var fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+            if(!fileSystem.FileExists(filePath)){
+                alert("附件不存在，请重新输入！");
+                return false;
+            }
+            var file = fileSystem.GetFile (filePath);
+            fileSize = file.Size;
+        } else {
+            fileSize = target.files[0].size;
+        }
+
+        var size = fileSize ;
+
+        if(size>filemaxsize){
+            alert("附件大小不能大于500K！");
+            target.value ="";
+            return false;
+        }
+        if(size<=0){
+            alert("附件大小不能为 0 K！");
+            target.value ="";
+            return false;
+        }
+
+        var imgURL = "";
+        try{
+            var file1 = null;
+            if(target.files && target.files[0] ){
+                file1 = target.files[0];
+            }else if(target.files && target.files.item(0)) {
+                file1 = target.files.item(0);
+            }
+            //Firefox 因安全性问题已无法直接通过input[file1].value 获取完整的文件路径
+            try{
+                //Firefox7.0
+                imgURL =  file1.getAsDataURL();
+                //alert("//Firefox7.0"+imgRUL);
+            }catch(e){
+                //Firefox8.0以上
+                imgRUL = window.URL.createObjectURL(file1);
+                //alert("//Firefox8.0以上"+imgRUL);
+            }
+        }catch(e){      //这里不知道怎么处理了，如果是遨游的话会报这个异常
+            //支持html5的浏览器,比如高版本的firefox、chrome、ie10
+            if (target.files && target.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    imgURL = e.target.result;
+                };
+                reader.readAsDataURL(target.files[0]);
+            }
+        }
+        $(".show img").remove();
+        creatImg(imgRUL);
+        return imgURL;
+    }
+
+    function creatImg(imgRUL){   //根据指定URL创建一个Img对象
+        var textHtml = "<img src='"+imgRUL+"'/>";
+        $(".make").after(textHtml);
+    }
+
+</script>
+<script type="text/javascript" charset="utf-8" src="__JS__/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__JS__/ueditor.all.min.js"> </script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="__JS__//zh-cn/zh-cn.js"></script>
+
+<link rel="stylesheet" type="text/css" href="__CSS__/webuploader.css">
+<div class="panel admin-panel margin-top" id="add">
+    <div class="panel-head"><strong><span class="icon-pencil-square-o"></span> 修改内容</strong></div>
+    <div class="body-content">
+        <form method="post" class="form-x" enctype="multipart/form-data" action="">
+            <div class="form-group">
+                <div class="label">
+                    <label>标题：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" value="" name="title" data-validate="required:请输入标题" />
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <!--<div class="form-group">
+                <div class="label">
+                    <label>URL：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" name="url" value=""  />
+                    <div class="tips"></div>
+                </div>
+            </div>-->
+            <div class="form-group">
+                <div class="label">
+                    <label>分类标题：</label>
+                </div>
+                <div class="field">
+                    <select name="type" class="input w50">
+                        <option value="">请选择分类</option>
+                        {foreach $type_arr as $value}
+                        <option value="{$value.type}" >{$value.name}</option>
+                        {/foreach}
+                    </select>
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>图片：</label>
+                </div>
+                <div class="field">
+                    <div class="show">
+                        <div class="make"></div>
+                        <img class="mini_img " src="__IMG__/none.jpg" width="100%">
+                        <div class="help-block"><a href="javascript:;" class="a-upload">点击上传<input class="" type="file" placeholder="" name="img"  onchange="fileChange(this)"></a></div>
+                    </div>
+                    <div class="tips">图片大小必须一致,否则会造成图片变形</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>内容：</label>
+                </div>
+                <div class="field">
+                    <div><script id="editor" name="text"  type="text/plain" style="width:1024px;height:500px;"></script></div>
+                    <div class="tips" title=""></div>
+                </div>
+            </div>
+           <!-- <div class="form-group">
+                <div class="label">
+                    <label>描述：</label>
+                </div>
+                <div class="field">
+                    <textarea type="text" class="input" name="note" style="height:120px;" value=""></textarea>
+                    <div class="tips"></div>
+                </div>
+            </div>-->
+           <!-- <div class="form-group">
+                <div class="label">
+                    <label>排序：</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input w50" name="sort" value=""  data-validate="required:,number:排序必须为数字" />
+                    <div class="tips"></div>
+                </div>
+            </div>-->
+            <div class="form-group">
+                <div class="label">
+                    <label>产品图片：</label>
+                </div>
+                <div class="field">
+                    <div class="demo">
+                        <div id="uploadimg">
+                            <div id="fList_imgs" class="uploader-list"></div>
+                            <div id="Pick_imgs" >选择图片</div>
+                        </div>
+                        <div class="tips">图片大小必须一致,否则会造成图片变形</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label></label>
+                </div>
+                <div class="field">
+                    <button class="button bg-main icon-check-square-o" type="submit"> 提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" src="__JS__/jquery-1.11.1.min.js"></script>  <!-- 引用jquery -->
+<script type="text/javascript" src="__JS__/webuploader.js"></script>    <!-- 引用插件js -->
+
+<script type="text/javascript">
+
+    //实例化编辑器
+    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+    var ue = UE.getEditor('editor');
+
+    uploaderPics('imgs');        //多图上传
+    //单图上传
+    //ids唯一ID
+    //folder文件保存目录
+    function uploaderOnePic(ids,folder) {
+        //上传图片
+        // 初始化Web Uploader
+        var uploader = WebUploader.create({
+            // 选完文件后，是否自动上传。
+            auto: true,
+            // swf文件路径
+            swf: '__SWF__/Uploader.swf',
+
+            // 文件接收服务端。
+            server: '{:url("pro/uploadpic")}',
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: {id:"#Pick_"+ids,
+                multiple: false   //只能选择一个文件上传
+            },
+            //限制只能上传一个文件
+            fileNumLimit: 1,
+            formData: {
+                folder:folder  //自定义参数
+            },
+            // 只允许选择图片文件。
+            accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/*'
+            }
+        });
+
+        // 当有文件添加进来的时候
+        uploader.on( 'fileQueued', function( file ) {
+            var $list = $("#fList_"+ids),
+                $li = $(
+                    '<div id="' + file.id + '" class="file-item thumbnail">' +
+                    '<img>' +
+                    '<div class="info">' + file.name + '</div>' +
+                    '</div>'
+                ),
+                $img = $li.find('img');
+
+
+            // $list为容器jQuery实例
+            $list.html( $li );
+
+            // 创建缩略图
+            // 如果为非图片文件，可以不用调用此方法。
+            // thumbnailWidth x thumbnailHeight 为 100 x 100
+            uploader.makeThumb( file, function( error, src ) {
+                if ( error ) {
+                    $img.replaceWith('<span>不能预览</span>');
+                    return;
+                }
+
+                $img.attr( 'src', src );
+            }, 100, 100 );
+        });
+        // 文件上传过程中创建进度条实时显示。
+        uploader.on( 'uploadProgress', function( file, percentage ) {
+            var $li = $( '#'+file.id ),
+                $percent = $li.find('.progress span');
+
+            // 避免重复创建
+            if ( !$percent.length ) {
+                $percent = $('<p class="progress"><span></span></p>')
+                    .appendTo( $li )
+                    .find('span');
+            }
+
+            $percent.css( 'width', percentage * 100 + '%' );
+        });
+
+        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+        uploader.on( 'uploadSuccess', function( file,response) {
+            $( '#'+file.id ).addClass('upload-state-done');
+            $("#fList_"+ids).append('<input type="hidden" name="'+ids+'[]" value="'+response.filePath+'" />');
+
+        });
+
+        // 文件上传失败，显示上传出错。
+        uploader.on( 'uploadError', function( file ) {
+            var $li = $( '#'+file.id ),
+                $error = $li.find('div.error');
+
+            // 避免重复创建
+            if ( !$error.length ) {
+                $error = $('<div class="error"></div>').appendTo( $li );
+            }
+
+            $error.text('上传失败');
+        });
+
+        // 完成上传完了，成功或者失败，先删除进度条。
+        uploader.on( 'uploadComplete', function( file ) {
+            $( '#'+file.id ).find('.progress').remove();
+        });
+    }
+
+    //多图上传
+    //ids唯一ID
+    //folder文件保存目录
+    function uploaderPics(ids,folder) {
+        //上传图片
+        // 初始化Web Uploader
+        var uploader = WebUploader.create({
+            // 选完文件后，是否自动上传。
+            auto: true,
+            // swf文件路径
+            swf: '__SWF__/Uploader.swf',
+
+            // 文件接收服务端。
+            server: '{:url("pro/uploadpic")}',
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: "#Pick_"+ids,
+            formData: {
+                folder:folder  //自定义参数
+            },
+            // 只允许选择图片文件。
+            accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/*'
+            }
+        });
+
+        // 当有文件添加进来的时候
+        uploader.on( 'fileQueued', function( file ) {
+            var $list = $("#fList_"+ids),
+                $li = $(
+                    '<div id="' + file.id + '" class="file-item thumbnail">' +
+                    '<img>' +
+                    '<div class="info">' + file.name + '</div>' +
+                    '</div>'
+                ),
+                $img = $li.find('img');
+
+
+            // $list为容器jQuery实例
+            $list.append( $li );
+
+            // 创建缩略图
+            // 如果为非图片文件，可以不用调用此方法。
+            // thumbnailWidth x thumbnailHeight 为 100 x 100
+            uploader.makeThumb( file, function( error, src ) {
+                if ( error ) {
+                    $img.replaceWith('<span>不能预览</span>');
+                    return;
+                }
+
+                $img.attr( 'src', src );
+            }, 100, 100 );
+        });
+        // 文件上传过程中创建进度条实时显示。
+        uploader.on( 'uploadProgress', function( file, percentage ) {
+            var $li = $( '#'+file.id ),
+                $percent = $li.find('.progress span');
+
+            // 避免重复创建
+            if ( !$percent.length ) {
+                $percent = $('<p class="progress"><span></span></p>')
+                    .appendTo( $li )
+                    .find('span');
+            }
+
+            $percent.css( 'width', percentage * 100 + '%' );
+        });
+
+        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+        uploader.on( 'uploadSuccess', function( file,response) {
+            $( '#'+file.id ).addClass('upload-state-done');
+            $("#fList_"+ids).append('<input type="hidden" name="'+ids+'[]" value="'+response.filePath+'" />');
+
+        });
+
+        // 文件上传失败，显示上传出错。
+        uploader.on( 'uploadError', function( file ) {
+            var $li = $( '#'+file.id ),
+                $error = $li.find('div.error');
+
+            // 避免重复创建
+            if ( !$error.length ) {
+                $error = $('<div class="error"></div>').appendTo( $li );
+            }
+
+            $error.text('上传失败');
+        });
+
+        // 完成上传完了，成功或者失败，先删除进度条。
+        uploader.on( 'uploadComplete', function( file ) {
+            $( '#'+file.id ).find('.progress').remove();
+        });
+    }
+</script>

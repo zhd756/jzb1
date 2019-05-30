@@ -24,6 +24,8 @@ class Cantact extends Common
 
         $arr = [
             'title'=>'联系我们',
+            'description' => $this->system['description'],
+            'keywords' => $this->system['keywords'],
             'system'=>$this->system,
             'news'=>$news_arr,
         ];
